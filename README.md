@@ -6,5 +6,5 @@
 
 - O trabalho consiste no projeto de um circuito eletrônico com o objetivo de calcular ângulo de inclinação de um mecanismo com um grau de liberdade, por meio do uso da unidade de medição inercial MPU-6050.
 
-
-
+### - Código da primeira Entrega (T1) -> Extração dos dados de aceleração e velocidade angular do sensor
+- [Entrega 1](T1_MPU6050.ino)
