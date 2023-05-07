@@ -15,11 +15,10 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("rotacao_X, rotacao_Y, rotacao_Z, grav_X, grav_Y, grav_Z");  // Legenda para o Serial Plotter
   acelerometro();
   giroscopio();
   registros();            
-  delay(100);         // Tempo em ms entre as leituras
+  delay(300);         // Tempo em ms entre as leituras
 }
 
 /* Enderecos de memoria encontrados no datasheet register map */
@@ -83,32 +82,32 @@ void ConversaoGiroscopio() {
 // Funcao p/ ler os valores numericos melhor visualmente no Serial Monitor
 /*void registros() {
   Serial.print("giroscopio (graus/s)");
-  Serial.print(" X=");
+  Serial.print(" X= ");
   Serial.print(rotacao_X);
-  Serial.print(" Y=");
+  Serial.print(" Y= ");
   Serial.print(rotacao_Y);
-  Serial.print(" Z=");
-  Serial.print(rotacao_Z);
+  Serial.print(" Z= ");
+  Serial.println(rotacao_Z); 
   Serial.print(" acelerometro (g)");
-  Serial.print(" X=");
+  Serial.print(" X= ");
   Serial.print(grav_X);
-  Serial.print(" Y=");
+  Serial.print(" Y= ");
   Serial.print(grav_Y);
-  Serial.print(" Z=");
+  Serial.print(" Z= ");
   Serial.println(grav_Z);
 }*/
 
 // Funcao p/ plotar as curvas melhor visualmente no Serial Plotter
 void registros() {
   Serial.print(rotacao_X); 
-  Serial.print(", ");
+  Serial.print(",");
   Serial.print(rotacao_Y);
-  Serial.print(", ");
-  Serial.print(rotacao_Z);
-  Serial.print(", ");
+  Serial.print(",");
+  Serial.println(rotacao_Z);
+  Serial.print(",");
   Serial.print(grav_X);
-  Serial.print(", ");
+  Serial.print(",");
   Serial.print(grav_Y);
-  Serial.print(", ");
+  Serial.print(",");
   Serial.println(grav_Z);
 }
