@@ -82,7 +82,7 @@ void ConversaoGiroscopio() {
 
 // Funcao p/ ler os valores numericos melhor visualmente no Serial Monitor
 /*void registros() {
-  Serial.print("giroscopio (deg/s)");
+  Serial.print("giroscopio (graus/s)");
   Serial.print(" X=");
   Serial.print(rotacao_X);
   Serial.print(" Y=");
