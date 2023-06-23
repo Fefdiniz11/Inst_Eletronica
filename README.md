@@ -8,3 +8,6 @@
 
 ### - Código da primeira Entrega (T1) - Extração dos dados de aceleração e velocidade angular do sensor
 - [T1_MPU6050.ino](https://github.com/Fefdiniz11/Inst_Eletronica/blob/main/Entrega%201/T1_MPU6050.ino)
+
+### - Código da segunda entrega (T2) - Calibração estática do acelerômetro
+- [T2_MPU6050ino](https://github.com/Fefdiniz11/Inst_Eletronica/blob/main/T2_MPU6050.ino)
