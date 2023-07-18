@@ -102,21 +102,24 @@ void eixos(){
       Serial.print("Media do eixo X: ");
       Serial.println(media_X);
       Serial.print("MediaX1 = ");
-      Serial.println(medias[0]);
-      Serial.print("MediaX2 = ");
+      Serial.print(medias[0]);
+      Serial.print(" | MediaX2 = ");
       Serial.println(medias[1]);
+      Serial.print("\n");
       Serial.print("Media do eixo Y: ");
       Serial.println(media_Y);
       Serial.print("MediaY1 = ");
-      Serial.println(medias[0]);
-      Serial.print("MediaY2 = ");
+      Serial.print(medias[0]);
+      Serial.print(" | MediaY2 = ");
       Serial.println(medias[1]); 
+      Serial.print("\n");
       Serial.print("Media do eixo Z: ");
       Serial.println(media_Z);
       Serial.print("MediaZ1 = ");
-      Serial.println(medias[0]);
-      Serial.print("MediaZ2 = ");
+      Serial.print(medias[0]);
+      Serial.print(" | MediaZ2 = ");
       Serial.println(medias[1]);
+      Serial.print("\n");
 
       media_X = 0;
       soma_X = 0;
@@ -135,18 +138,20 @@ void eixos(){
         ganho_Z = (medias[0] - medias[1]) / 2;
         offset_Z = (medias[0] + medias[1]) / 2;
         
-        Serial.print("Ganho = ");
-        Serial.println(ganho_X);
-        Serial.print("Offset = ");
-        Serial.println(offset_X); 
-        Serial.print("Ganho = ");
-        Serial.println(ganho_Y);
-        Serial.print("Offset = ");
-        Serial.println(offset_Y);
-        Serial.print("Ganho = ");
-        Serial.println(ganho_Z);
-        Serial.print("Offset = ");
+        Serial.print("Ganho: X = ");
+        Serial.print(ganho_X);
+        Serial.print(", Y = ");
+        Serial.print(ganho_Y);
+        Serial.print(", Z = ");
+        Serial.println(ganho_Z);;
+        Serial.print("\n");
+        Serial.print("Offset X = ");
+        Serial.print(offset_X); 
+        Serial.print(", Y = ");
+        Serial.print(offset_Y);
+        Serial.print(", Z = ");
         Serial.println(offset_Z);
+        
       }
     }
   }
