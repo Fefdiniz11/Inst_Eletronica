@@ -5,7 +5,7 @@
 long acelerometro_X, acelerometro_Y, acelerometro_Z;
 float grav_X, grav_Y, grav_Z;
 float soma_X = 0, media_X = 0, ganho_X = 0, offset_X = 0, theta_X = 0, soma_Y = 0,  media_Y = 0, ganho_Y = 0, offset_Y = 0, theta_Y = 0, soma_Z = 0,  media_Z = 0, ganho_Z = 0, offset_Z = 0;
-float medias[2] = {0.0, 0.0};
+float mediaS_X[2] = {0.0, 0.0}, mediaS_Y[2] = {0.0, 0.0}, mediaS_Z[2] = {0.0, 0.0};
 
 // Variaveis do giroscopio
 long giroscopio_X, giroscopio_Y, giroscopio_Z;
@@ -93,32 +93,32 @@ void eixos(){
     if (i == 100) {
 
       media_X = soma_X / 100;
-      medias[j] = media_X;
+      mediaS_X[j] = media_X;
       media_Y = soma_Y / 100;
-      medias[j] = media_Y;
+      mediaS_Y[j] = media_Y;
       media_Z = soma_Z / 100;
-      medias[j] = media_Z;
+      mediaS_Z[j] = media_Z;
 
       Serial.print("Media do eixo X: ");
       Serial.println(media_X);
       Serial.print("MediaX1 = ");
-      Serial.print(medias[0]);
+      Serial.print(mediaS_X[0]);
       Serial.print(" | MediaX2 = ");
-      Serial.println(medias[1]);
+      Serial.println(mediaS_X[1]);
       Serial.print("\n");
       Serial.print("Media do eixo Y: ");
       Serial.println(media_Y);
       Serial.print("MediaY1 = ");
-      Serial.print(medias[0]);
+      Serial.print(mediaS_Y[0]);
       Serial.print(" | MediaY2 = ");
-      Serial.println(medias[1]); 
+      Serial.println(mediaS_Y[1]); 
       Serial.print("\n");
       Serial.print("Media do eixo Z: ");
       Serial.println(media_Z);
       Serial.print("MediaZ1 = ");
-      Serial.print(medias[0]);
+      Serial.print(mediaS_Z[0]);
       Serial.print(" | MediaZ2 = ");
-      Serial.println(medias[1]);
+      Serial.println(mediaS_Z[1]);
       Serial.print("\n");
 
       media_X = 0;
@@ -131,12 +131,12 @@ void eixos(){
       j++;
 
       if (j == 2) {
-        ganho_X = (medias[0] - medias[1]) / 2;
-        offset_X = (medias[0] + medias[1]) / 2;
-        ganho_Y = (medias[0] - medias[1]) / 2;
-        offset_Y = (medias[0] + medias[1]) / 2;
-        ganho_Z = (medias[0] - medias[1]) / 2;
-        offset_Z = (medias[0] + medias[1]) / 2;
+        ganho_X = (mediaS_X[0] - mediaS_X[1]) / 2;
+        offset_X = (mediaS_X[0] + mediaS_X[1]) / 2;
+        ganho_Y = (mediaS_Y[0] - mediaS_Y[1]) / 2;
+        offset_Y = (mediaS_Y[0] + mediaS_Y[1]) / 2;
+        ganho_Z = (mediaS_Z[0] - mediaS_Z[1]) / 2;
+        offset_Z = (mediaS_Z[0] + mediaS_Z[1]) / 2;
         
         Serial.print("Ganho: X = ");
         Serial.print(ganho_X);
@@ -156,7 +156,6 @@ void eixos(){
     }
   }
 }
-
 
 // Iniciar leitura dos eixos do acelerometro e chamar as calibracoes desses eixos
 void acelerometro(){
