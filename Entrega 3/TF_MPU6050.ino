@@ -5,9 +5,15 @@
 long acelerometro_X, acelerometro_Y, acelerometro_Z, GyrX, GyrY, GyrZ;  
 float grav_X, grav_Y, grav_Z, velocidadeAngularX, velocidadeAngularY, velocidadeAngularZ;;
 float soma_X = 0, media_X = 0, ganho_X = 0, offset_X = 0, soma_Y = 0,  media_Y = 0, ganho_Y = 0, offset_Y = 0, soma_Z = 0,  media_Z = 0, ganho_Z = 0, offset_Z = 0;
+<<<<<<< Updated upstream
 float mediaS_X[2] = {0.0, 0.0}, mediaS_Y[2] = {0.0, 0.0}, mediaS_Z[2] = {0.0, 0.0};
 float dt = 0; // intervalo de tempo entre as leituras do giroscopio (em segundos)
 float angulo_X = 0, angulo = 0, theta = 0, theta_X = 0,angulo_Ref=0; 
+=======
+float mediaS_X[2] = {0.0,0.0}, mediaS_Y[2] = {0.0, 0.0}, mediaS_Z[2] = {0.0, 0.0};
+float dt = 0;
+float angulo_X = 0, angulo = 0, theta = 0, theta_X = 0,angulo_Ref = 0; 
+>>>>>>> Stashed changes
 
 float temp_prev=0;
 char eixo;
@@ -31,17 +37,18 @@ void configurarMPU(){
   Wire.endTransmission(true);     // Encerra a transmissao desses dados
 }
 
+// Le os dados do acelerometro e do giroscopio
 int16_t dados(int endereco, byte regEndereco) {
   // Le 2 bytes de dados do registrador especificado
-  Wire.beginTransmission(endereco);
-  Wire.write(regEndereco);
-  Wire.endTransmission(false);
+  Wire.beginTransmission(endereco);                 // Endereco I2C, no caso da MPU-6050 eh 0x68
+  Wire.write(regEndereco);                          // Endereco do registrador que contem os dados
+  Wire.endTransmission(false);                      // Encerra a transmissão I2C, mas mantém a conexão com o dispositivo aberta 
 
-  Wire.requestFrom(endereco, 2, true);
-  byte byte_maior = Wire.read();
-  byte byte_menor = Wire.read();
+  Wire.requestFrom(endereco, 2, true);              // Solicita 2 bytes do endereco e encerra apos a leitura
+  byte byte_maior = Wire.read();                    // Le os dois bytes de dados solicitados do dispositivo
+  byte byte_menor = Wire.read();                    
 
-  int16_t valor = (byte_maior << 8) | byte_menor;
+  int16_t valor = (byte_maior << 8) | byte_menor;   // combina os dois bytes lidos em um valor inteiro de 16 bits 
   return valor;
 }
 
@@ -77,6 +84,7 @@ void eixos(){
     // GyrY = ConversaoGiroscopio(velocidadeAngularY);       //Converter para graus por segundo
     // velocidadeAngularZ = dados(0x68, 0x47);               //Le os valores do giroscopio
     // GyrZ = ConversaoGiroscopio(velocidadeAngularZ);       //Converter para graus por segundo
+<<<<<<< Updated upstream
      
     // Angulo de inclinacao por integracao numerica para o giroscopio - somando a velocidade angular multiplicada pelo intervalo de tempo
     dt=(millis() - temp_prev)/1000;
@@ -93,10 +101,13 @@ void eixos(){
       angulo_X = angulo;
     }
 
+=======
+    
+>>>>>>> Stashed changes
     // Angulo de inclinacao por trigonometria para o acelerometro - Formula do angulo de inclinacao
     theta = (atan( (grav_X/(sqrt ((grav_Y*grav_Y)) + ((grav_Z) *(grav_Z))) )))*180/M_PI; // Calcular o angulo
 
-    // Para ajustar os valores dentro dos respectivos quadrantes
+    // Para ajustar os valores dentro da circunferencia de 0 a 360
     if(theta < 0){
       theta_X = theta + 360;
     }
@@ -104,6 +115,20 @@ void eixos(){
       theta_X = theta;
     }
 
+    // Angulo de inclinacao por integracao numerica para o giroscopio - somando a velocidade angular multiplicada pelo intervalo de tempo
+    dt=(millis() - temp_prev)/1000;     // Intervalo de tempo
+    temp_prev=millis();
+    
+    angulo_Ref = (atan( (grav_X/(sqrt ((grav_Y*grav_Y)) + ((grav_Z) *(grav_Z))) )))*180/M_PI;   // Valor de referencia para atualizar a cada iteracao  
+    angulo = angulo_Ref + (GyrX * dt); // Calcula o angulo de rotacao em torno do eixo X 
+    
+    // Para ajustar os valores dentro da circunferencia de 0 a 360
+    if(angulo < 0){
+      angulo_X = angulo + 360;
+    }
+    else{
+      angulo_X = angulo;
+    }
 
    Serial.print("acelerometro: X = ");
    Serial.print(grav_X);
