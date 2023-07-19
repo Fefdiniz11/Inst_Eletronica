@@ -13,4 +13,4 @@
 - [T2_MPU6050.ino](https://github.com/Fefdiniz11/Inst_Eletronica/blob/main/Entrega%202/T2_MPU6050.ino)
 
 ### - Código da Entrega Final (TF) - Medição do ângulo de inclinação
-- [TF_MPU6050.ino](https://github.com/Fefdiniz11/Inst_Eletronica/blob/main/Entrega%203/T3_MPU6050.ino)
+- [TF_MPU6050.ino](https://github.com/Fefdiniz11/Inst_Eletronica/blob/main/Entrega%203/TF_MPU6050.ino)
