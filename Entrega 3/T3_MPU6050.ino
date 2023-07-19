@@ -1,19 +1,15 @@
 #include <Wire.h>
 #include <math.h>
 
-// Variaveis do acelerometro
-long acelerometro_X, acelerometro_Y, acelerometro_Z;
-float grav_X, grav_Y, grav_Z;
-float soma_X = 0, media_X = 0, ganho_X = 0, offset_X = 0, theta_X = 0, soma_Y = 0,  media_Y = 0, ganho_Y = 0, offset_Y = 0, theta_Y = 0, soma_Z = 0,  media_Z = 0, ganho_Z = 0, offset_Z = 0;
+// Variaveis 
+long acelerometro_X, acelerometro_Y, acelerometro_Z, GyrX, GyrY, GyrZ;  
+float grav_X, grav_Y, grav_Z, velocidadeAngularX, velocidadeAngularY, velocidadeAngularZ;;
+float soma_X = 0, media_X = 0, ganho_X = 0, offset_X = 0, soma_Y = 0,  media_Y = 0, ganho_Y = 0, offset_Y = 0, soma_Z = 0,  media_Z = 0, ganho_Z = 0, offset_Z = 0;
 float mediaS_X[2] = {0.0, 0.0}, mediaS_Y[2] = {0.0, 0.0}, mediaS_Z[2] = {0.0, 0.0};
-
-// Variaveis do giroscopio
-long giroscopio_X, giroscopio_Y, giroscopio_Z;
-float rotacao_X, rotacao_Y, rotacao_Z;
-
+float dt = 0.01; // intervalo de tempo entre as leituras do giroscopio (em segundos)
+float angulo_X = 0, angulo = 0, theta = 0, theta_X = 0; 
 char eixo;
 int i = 0, j = 0;
-float theta = 0;
 
 void setup() {
   Serial.begin(115200);   // Baud rate p/ ESP32 - Microcontrolador utilizado nesse projeto
@@ -53,20 +49,48 @@ float ConversaoAcelerometro(long valor){
   return grav;
 }
 
-// Calibracao para o eixo X
+// Datasheet fornece sensibilidade de 131 LSB/(graus/s) -> conversao p/ graus/s
+float ConversaoGiroscopio(long valor){
+  float gyro = valor / 131.0; 
+  return gyro;
+}
+
+
+// Calibracao para os eixos
 void eixos(){
-  Serial.print("--------------- Eixos ---------------");
+
+  Serial.print("\n--------------- Eixos ---------------\n");
+
   for(i = 1; i <= 100; i++){
 
-    acelerometro_X = dados(0x68, 0x3B);     // Le os valores do acelerometro
+    acelerometro_X = dados(0x68, 0x3B);                   // Le os valores do acelerometro
     grav_X = ConversaoAcelerometro(acelerometro_X);       // Converter para forca gravitacional
-    acelerometro_Y = dados(0x68, 0x3D);     // Le os valores do acelerometro
+    acelerometro_Y = dados(0x68, 0x3D);                   // Le os valores do acelerometro
     grav_Y = ConversaoAcelerometro(acelerometro_Y);       // Converter para forca gravitacional
-    acelerometro_Z = dados(0x68, 0x3F);     // Le os valores do acelerometro
+    acelerometro_Z = dados(0x68, 0x3F);                   // Le os valores do acelerometro
     grav_Z = ConversaoAcelerometro(acelerometro_Z);       // Converter para forca gravitacional       
-    
-    float theta = (atan( (grav_X/(sqrt ((grav_Y*grav_Y)) + ((grav_Z) *(grav_Z))) )))*180/M_PI; // Calcular o angulo
+    velocidadeAngularX = dados(0x68, 0x43);               //Le os valores do giroscopio
+    GyrX = ConversaoGiroscopio(velocidadeAngularX);       //Converter para graus por segundo
+    // velocidadeAngularY = dados(0x68, 0x45);               //Le os valores do giroscopio
+    // GyrY = ConversaoGiroscopio(velocidadeAngularY);       //Converter para graus por segundo
+    // velocidadeAngularZ = dados(0x68, 0x47);               //Le os valores do giroscopio
+    // GyrZ = ConversaoGiroscopio(velocidadeAngularZ);       //Converter para graus por segundo
+     
+    // Angulo de inclinacao por integracao numerica para o giroscopio - somando a velocidade angular multiplicada pelo intervalo de tempo
+    angulo += GyrX * dt; // Calcula o angulo de rotacao em torno do eixo X
 
+    // Para ajustar os valores dentro dos respectivos quadrantes
+    if(angulo < 0){
+      angulo_X = angulo + 360;
+    }
+    else{
+      angulo_X = angulo;
+    }
+
+    // Angulo de inclinacao por trigonometria para o acelerometro - Formula do angulo de inclinacao
+    theta = (atan( (grav_X/(sqrt ((grav_Y*grav_Y)) + ((grav_Z) *(grav_Z))) )))*180/M_PI; // Calcular o angulo
+
+    // Para ajustar os valores dentro dos respectivos quadrantes
     if(theta < 0){
       theta_X = theta + 360;
     }
@@ -74,14 +98,18 @@ void eixos(){
       theta_X = theta;
     }
 
-    Serial.print("acelerometro (g): X = ");
+
+    Serial.print("acelerometro: X = ");
     Serial.print(grav_X);
     Serial.print(", Y = ");
     Serial.print(grav_Y);
     Serial.print(", Z = ");
     Serial.println(grav_Z);
+    Serial.print("\n");
     Serial.print("acelerometro theta X = ");
     Serial.println(theta_X);
+    Serial.print("giroscopio angulo: X: ");
+    Serial.println(angulo_X);
     Serial.print("\n");
 
     delay(100);  // Intervalo de leitura dos dados
