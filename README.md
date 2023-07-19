@@ -1,7 +1,6 @@
 # Trabalho de Instrumentação Eletrônica
 
-- Alunos: Fernanda Faria Diniz  - 190087099
-          Gabriel de Souza Lima - 190057351
+- Alunos: Fernanda Faria Diniz  - 190087099 e Gabriel de Souza Lima - 190057351
 
 - Repositório para anexo dos códigos utilizados no projeto.
 
